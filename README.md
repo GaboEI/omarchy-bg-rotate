@@ -2,7 +2,7 @@
 
 ![Background Rotation settings panel](preview.png)
 
-*The panel follows Omarchy's language setting; shown here in Spanish.*
+*The panel follows Omarchy's language setting.*
 
 A small Omarchy shell plugin that rotates backgrounds for the active theme on a schedule.
 
