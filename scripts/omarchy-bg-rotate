@@ -1,0 +1,96 @@
+#!/bin/bash
+# MIT License
+#
+# Copyright (c) 2026 gabodev
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
+# Bundled helper for the gabodev.bg-rotate shell plugin. Service.qml runs it to
+# move the active theme's wallpaper: `next` and `random` rotate, `status`
+# reports what is on screen as JSON for the panel. Background enumeration and
+# theme parsing live here rather than in QML. It is not an Omarchy command and
+# is never installed on PATH; the plugin calls it by absolute path.
+#
+# Usage: omarchy-bg-rotate [next|random|status]
+set -uo pipefail
+
+OMARCHY_PATH="${OMARCHY_PATH:-$HOME/omarchy}"
+export PATH="$OMARCHY_PATH/bin:$PATH"
+
+STATE="$HOME/.local/state/omarchy/current"
+LINK="$STATE/background"
+MODE="${1:-next}"
+THEME_NAME="$(cat "$STATE/theme.name" 2>/dev/null)"
+
+collect_backgrounds() {
+  find -L "$HOME/.config/omarchy/backgrounds/$THEME_NAME" "$STATE/theme/backgrounds" \
+    -maxdepth 1 -type f \
+    \( -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.png' -o -iname '*.gif' -o -iname '*.bmp' -o -iname '*.webp' \
+       -o -iname '*.mp4' -o -iname '*.m4v' -o -iname '*.mov' -o -iname '*.webm' -o -iname '*.mkv' -o -iname '*.avi' \) \
+    -print0 2>/dev/null | sort -z
+}
+
+case "$MODE" in
+  next)
+    exec omarchy-theme-bg-next
+    ;;
+
+  random)
+    mapfile -d '' -t files < <(collect_backgrounds)
+    if (( ${#files[@]} > 1 )); then
+      current="$(readlink "$LINK" 2>/dev/null || true)"
+      pick=""
+      for _ in 1 2 3 4 5 6 7 8 9 10; do
+        candidate="${files[RANDOM % ${#files[@]}]}"
+        if [[ $candidate != "$current" ]]; then
+          pick=$candidate
+          break
+        fi
+      done
+      if [[ -z $pick ]]; then
+        pick="${files[RANDOM % ${#files[@]}]}"
+      fi
+      exec omarchy-theme-bg-set "$pick"
+    else
+      exec omarchy-theme-bg-next
+    fi
+    ;;
+
+  status)
+    # Read-only report for the shell panel: the plugin renders, this enumerates.
+    mapfile -d '' -t files < <(collect_backgrounds)
+    count=${#files[@]}
+    current="$(readlink -f "$LINK" 2>/dev/null || true)"
+    index=-1
+    for i in "${!files[@]}"; do
+      if [[ ${files[$i]} == "$current" ]]; then
+        index=$i
+        break
+      fi
+    done
+    jq -nc --arg theme "$THEME_NAME" --arg current "$current" \
+      --argjson count "$count" --argjson index "$index" \
+      '{theme: $theme, count: $count, index: $index, current: $current}'
+    ;;
+
+  *)
+    echo "Usage: omarchy-bg-rotate [next|random|status]" >&2
+    exit 2
+    ;;
+esac

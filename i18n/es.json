@@ -1,0 +1,21 @@
+{
+  "panel.title": "Rotación de fondo",
+  "panel.subtitle": "%1 · %2 fondos",
+  "panel.loading": "Cargando…",
+  "panel.enable": "Activar rotación",
+  "panel.enableDescription": "Cambia el fondo automáticamente cada intervalo",
+  "panel.mode": "MODO",
+  "panel.modeSequential": "Secuencial",
+  "panel.modeRandom": "Aleatorio",
+  "panel.interval": "INTERVALO",
+  "panel.minutes": "%1 min",
+  "panel.nextNow": "Siguiente ahora",
+  "panel.close": "Cerrar",
+  "panel.statusPosition": "Fondo %1 de %2",
+  "panel.noBackgrounds": "Sin fondos en el tema activo",
+  "panel.currentNotInList": "El fondo actual no está en la lista (%1 disponibles)",
+  "error.saveFailed": "No se pudo guardar la configuración",
+  "error.exitCode": "omarchy-bg-rotate terminó con código %1",
+  "error.invalidStatus": "omarchy-bg-rotate devolvió datos de estado inválidos",
+  "error.missingScript": "El plugin está instalado de forma incompleta: falta su script o no es ejecutable (%1)"
+}

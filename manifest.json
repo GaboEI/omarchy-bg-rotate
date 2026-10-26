@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "id": "gabodev.bg-rotate",
+  "name": "Background Rotation",
+  "version": "1.0.0",
+  "author": "gabodev",
+  "description": "Rotate the active theme's wallpapers on a schedule or on demand.",
+  "kinds": [
+    "service",
+    "panel"
+  ],
+  "keepLoaded": true,
+  "entryPoints": {
+    "service": "Service.qml",
+    "panel": "Panel.qml"
+  }
+}

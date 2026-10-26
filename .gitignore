@@ -1,0 +1,5 @@
+# Local editor backup files.
+*.bak
+
+# Finder metadata.
+.DS_Store

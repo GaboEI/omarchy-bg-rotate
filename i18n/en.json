@@ -1,0 +1,21 @@
+{
+  "panel.title": "Background rotation",
+  "panel.subtitle": "%1 · %2 wallpapers",
+  "panel.loading": "Loading…",
+  "panel.enable": "Enable rotation",
+  "panel.enableDescription": "Change the wallpaper automatically at each interval",
+  "panel.mode": "MODE",
+  "panel.modeSequential": "Sequential",
+  "panel.modeRandom": "Random",
+  "panel.interval": "INTERVAL",
+  "panel.minutes": "%1 min",
+  "panel.nextNow": "Next now",
+  "panel.close": "Close",
+  "panel.statusPosition": "Wallpaper %1 of %2",
+  "panel.noBackgrounds": "No wallpapers in the active theme",
+  "panel.currentNotInList": "The current wallpaper is not in the list (%1 available)",
+  "error.saveFailed": "Could not save the configuration",
+  "error.exitCode": "omarchy-bg-rotate exited with code %1",
+  "error.invalidStatus": "omarchy-bg-rotate returned invalid status data",
+  "error.missingScript": "The plugin is incompletely installed: its script is missing or not executable (%1)"
+}
