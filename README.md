@@ -23,10 +23,8 @@ A small Omarchy shell plugin that rotates backgrounds for the active theme on a 
 
 ## Install
 
-Replace `<USER>` with the GitHub account that will publish the repository.
-
 ```sh
-omarchy plugin add https://github.com/<USER>/omarchy-bg-rotate
+omarchy plugin add https://github.com/GaboEI/omarchy-bg-rotate
 ```
 
 For a manual install, copy this plugin directory to `~/.config/omarchy/plugins/gabodev.bg-rotate/`, then run:
